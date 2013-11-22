@@ -1,0 +1,39 @@
+{
+	"audit": {
+		"name": "DeepSec | Login the admin, give privilege to the Hacker and log him out",
+
+		"scenario": [
+			{
+				"attack": [
+					{
+						"method": "POST",
+						"type_attack": "dico",
+						"file": "passwords.txt",
+						"form": "deepsec_form_log_user.html",
+						"comment": "attempt to connect the admin with a list of selected passwords"
+					}
+				]
+			},
+			{
+				"attack": [
+					{
+						"method": "GET",
+						"type_attack": "special_value",
+						"url": "http://192.168.56.1/vuln-website/index.php/welcome/upgrade/27",
+						"comment": "then, after the login session, we expect the admin to be logged in, attempt to get upgrade our account"
+					}
+				]
+			},			
+			{
+				"attack": [
+					{
+						"method": "GET",
+						"type_attack": "special_value",
+						"url": "http://192.168.56.1/vuln-website/index.php/welcome/logout",
+						"comment": "The final step is to logout the admin"
+					}
+				] 
+			}	
+		]
+	}
+}
