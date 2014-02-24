@@ -25,6 +25,13 @@ def url_process(url):
     opts.url = opts.url + '?' + urlencode(parameters)
     return opts.url
 
+def create_json():
+    data = { 'audit': { 'name': 'PoC done with Automatic Tool', 'scenario': [{'attack': []}] }}
+    return data
+
+def display_json(data):
+    print json.dumps(data, sort_keys=True, indent=2)
+
 def form_process(form_url, selectors):
     req = send_http_request(form_url)
     form = get_form(req.content, selectors)
@@ -185,10 +192,24 @@ else:
         arg = arg.split('=')
         PARAMS[arg[0]] = arg[1]
 
+    # form process
     if (opts.form is not None):
         form_process(opts.form, selectors)
 
+    # url process
     if (opts.url is not None):
+        attack = { 'method': 'GET'}
         if (opts.special_value is False):
-            opts.url = url_process(opts.url)
-        print opts.url
+            attack['type_attack'] = 'dico'
+            attack['file'] = opts.dico_file
+            attack['url'] = url_process(opts.url)
+            # opts.url = 
+        else:
+            attack['type_attack'] = 'special_value'
+            attack['url'] = opts.url
+        data = create_json()
+        data['audit']['scenario'][0]['attack'] = [attack]
+
+        display_json(data)
+
+    
