@@ -40,7 +40,7 @@ def form_process(form_url, selectors):
     form = get_form(req.content, selectors)
     form = str(form)
     form = replace_form_with_tokens(form_url, form)
-    print form
+    return form
 
 def replace_form_with_tokens(url, form):
     global PARAMS
@@ -71,16 +71,26 @@ def get_form(content, selectors):
             return form[0]
     pass
 
+# create .conf file
 def create_conf_file(data):
     global TMP_FOLDER
     global CONF_FILE
 
     conf_file = TMP_FOLDER + CONF_FILE
-    type(data)
     with open(conf_file,"w") as f:
         json.dump(data, f)
     f.close()
 
+# create file with specific data
+def create_file(filename, data):
+    global TMP_FOLDER
+
+    tmp_file = TMP_FOLDER + filename
+    with open(tmp_file, "w") as f:
+        f.write(data)
+    f.close()
+
+# launch csrft
 def launch_csrft():
     global CSRFT_LOCATION
     global TMP_FOLDER
@@ -217,7 +227,20 @@ else:
 
     # form process
     if (opts.form is not None):
-        form_process(opts.form, selectors)
+        attack = {'method' : 'POST'}
+        form = form_process(opts.form, selectors)
+        create_file('form.html', form)
+        if (opts.special_value is False):
+            attack['type_attack'] = 'dico'
+            attack['file'] = opts.dico_file
+        else:
+            attack['type_attack'] = 'special_value'
+        attack['form'] = TMP_FOLDER + 'form.html'
+        data = create_json()
+        data['audit']['scenario'][0]['attack'] = [attack]
+
+        create_conf_file(data)
+        launch_csrft()
 
     # url process
     if (opts.url is not None):
@@ -235,7 +258,3 @@ else:
 
         create_conf_file(data)
         launch_csrft()
-
-        # display_json(data)
-
-    
