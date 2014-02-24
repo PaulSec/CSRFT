@@ -6,9 +6,12 @@ from bs4 import BeautifulSoup
 import json
 import urllib
 import urlparse
+import os
 
 # server.js location
 CSRFT_LOCATION = "./../server.js"
+TMP_FOLDER = "/tmp/csrft/"
+CONF_FILE = "tmp.conf"
 
 PARAMS = {}
 COOKIE = ""
@@ -67,6 +70,23 @@ def get_form(content, selectors):
         else:
             return form[0]
     pass
+
+def create_conf_file(data):
+    global TMP_FOLDER
+    global CONF_FILE
+
+    conf_file = TMP_FOLDER + CONF_FILE
+    type(data)
+    with open(conf_file,"w") as f:
+        json.dump(data, f)
+    f.close()
+
+def launch_csrft():
+    global CSRFT_LOCATION
+    global TMP_FOLDER
+    global CONF_FILE
+
+    os.system("node " + CSRFT_LOCATION + " " + TMP_FOLDER + CONF_FILE)
 
 # iterate on all forms if after findAll (with selectors), len > 1
 def iterate_on_all_forms(forms):
@@ -192,6 +212,9 @@ else:
         arg = arg.split('=')
         PARAMS[arg[0]] = arg[1]
 
+    # creating tmp folder
+    if not os.path.exists(TMP_FOLDER): os.makedirs(TMP_FOLDER)
+
     # form process
     if (opts.form is not None):
         form_process(opts.form, selectors)
@@ -210,6 +233,9 @@ else:
         data = create_json()
         data['audit']['scenario'][0]['attack'] = [attack]
 
-        display_json(data)
+        create_conf_file(data)
+        launch_csrft()
+
+        # display_json(data)
 
     
