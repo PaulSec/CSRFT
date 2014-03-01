@@ -78,8 +78,10 @@ def create_conf_file(data):
 
     conf_file = TMP_FOLDER + CONF_FILE
     with open(conf_file,"w") as f:
-        json.dump(data, f)
-    f.close()
+        data = str(json.dumps(data, sort_keys=True, indent=2))
+        print data
+        f.write(data)
+        f.close()
 
 # create file with specific data
 def create_file(filename, data):
