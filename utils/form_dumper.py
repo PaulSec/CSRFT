@@ -79,7 +79,6 @@ def create_conf_file(data):
     conf_file = TMP_FOLDER + CONF_FILE
     with open(conf_file,"w") as f:
         data = str(json.dumps(data, sort_keys=True, indent=2))
-        print data
         f.write(data)
         f.close()
 
