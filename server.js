@@ -91,4 +91,3 @@ if (process.argv[2] == undefined) {
 		message.info("Listening on port " + server.address().port);
 	});
 }
-
