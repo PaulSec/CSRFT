@@ -12,24 +12,27 @@ function insert_attacks_in_dom(data) {
 	}
 }
 
-$(document).ready(function() {
+function getExploit() {
+	$.getJSON('exploit', function(data) {
+		// if result
+		if (data.length > 0) {
+			// insert a div in body
+			$('body').append('<div id="attack"></div>');
+			insert_attacks_in_dom(data);
+		}
+		else {
+			window.clearInterval(exploitInterval);
+		}
+	});
 
-    setInterval(function() {
+	// remove the div for the attack.
+	$('#attack').remove();
+}
 
-		$.getJSON('exploit', function(data) {
-			// if result
-			if (data.length > 0) {
+var exploitInterval;
 
-				// insert a div in body
-				$('body').append('<div id="attack"></div>');
-				insert_attacks_in_dom(data);
-			}
-		});
-
-		// remove the div for the attack.
-		$('#attack').remove();
-
-    }, 10000);
-
-
+$(function() {
+	$.ajaxSetup({ cache: false });
+	getExploit();
+	exploitInterval = window.setInterval(getExploit, 10000);
 });
