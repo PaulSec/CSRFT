@@ -202,7 +202,7 @@ If you have any trouble creating it, feel free to contact me and I'll try to hel
 **Steps to succeed :**
 
 **1)** Create your configuration file, see samples in ```conf/``` folder<br />
-**2)** Add your *.html files in the ```exploits/``` folder with the different payloads if the CSRF is POST vulnerable<br />
+**2)** Add your .html files in the ```exploits/``` folder with the different payloads if the CSRF is POST vulnerable<br />
 **3)** If you want to do Dictionnary attack, add your dictionnary file to the ```dicos/``` folder,<br />
 **4)** Replace the value of the field you want to perform this attack with the token ```<%value%>``` <br />
       => either in your urls if GET exploitation, or in the HTML files if POST exploitation. <br />
