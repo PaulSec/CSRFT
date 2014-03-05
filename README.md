@@ -57,7 +57,7 @@ However, here is a little summary of those folders :
 * ```views folder``` : index file and exploit template
 * ```dicos``` : Folder containing all your dictionnaries for those attacks
 * ```lib``` : libs specific for my project (custom ones)
-* ```utils``` : folder containing utils such as : form_dumper.py which will launch CSRFT directly.
+* ```utils``` : folder containing utils such as : csrft_utils.py which will launch CSRFT directly.
 * ```server.js``` file - the HTTP server
 
 ### Configuration file templates 
@@ -211,20 +211,20 @@ If you have any trouble creating it, feel free to contact me and I'll try to hel
 
 #### B) I want to automate attacks really easily
 
-To do so, I developed a Python script **form_dumper.py** in ```utils``` folder that will do this for you. 
+To do so, I developed a Python script **csrft_utils.py** in ```utils``` folder that will do this for you. 
 
 Here are some basic use cases :
 
 **GET parameter with Dictionnary attack : **
 
 ```
-$ python form_dumper.py --url="http://www.vulnerable.com/changePassword.php?newPassword=csvulnerableParameter" --param=newPassword --dico_file="../dicos/passwords.txt"
+$ python csrft_utils.py --url="http://www.vulnerable.com/changePassword.php?newPassword=csvulnerableParameter" --param=newPassword --dico_file="../dicos/passwords.txt"
 ```
 
 **POST parameter with Special value attack : **
 
 ```
-$ python form_dumper.py --form=http://website.com/user.php --id=changePassword --param=password password=newPassword --special_value
+$ python csrft_utils.py --form=http://website.com/user.php --id=changePassword --param=password password=newPassword --special_value
 ```
 
 ### Conclusion
