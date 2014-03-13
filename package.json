@@ -1,0 +1,32 @@
+{
+  "name": "CSRFT",
+  "version": "0.0.1",
+  "description": "CSRFT, A Lightweight CSRF Toolkit",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/PaulSec/CSRFT.git"
+  },
+  "keywords": [
+    "CSRF",
+    "Toolkit",
+    "Offensive",
+    "Security",
+    "Tool"
+  ],
+  "author": "Paul A. (PaulSec)",
+  "license": "GPLv3",
+  "bugs": {
+    "url": "https://github.com/PaulSec/CSRFT/issues"
+  },
+  "homepage": "https://github.com/PaulSec/CSRFT",
+  "dependencies": {
+    "express": "^3.4.8",
+    "ejs": "^0.8.5",
+    "colors": "^0.6.2"
+  }
+}
