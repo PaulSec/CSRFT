@@ -72,6 +72,7 @@ app.get('/', function(req, res) {
 
 
 // check for command line argument configuration file.json
+message.log("CSRFT: Toolkit for CSRF vulnerabilities.");
 if (process.argv[2] == undefined) {
 	console.log("Usage : node server.js <file.json> <port : default 8080>");
 	process.exit(1);
