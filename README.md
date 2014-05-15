@@ -22,7 +22,14 @@ First, clone it :
 $ git clone git@github.com:PaulSec/CSRFT.git
 ```
 
-Then, in the directory, launch the server.js : 
+To make this project work, get the latest Node.js version [here](http://nodejs.org/).
+Go in the directory and install all the dependencies: 
+
+```
+npm install
+```
+
+Then, launch the server.js : 
 
 ```
 $ node server.js
