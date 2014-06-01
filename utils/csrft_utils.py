@@ -1,10 +1,8 @@
 import optparse
 import sys
 import requests
-import re
 from bs4 import BeautifulSoup
 import json
-import urllib
 import urlparse
 import os
 
@@ -16,11 +14,12 @@ CONF_FILE = "tmp.conf"
 PARAMS = {}
 COOKIE = ""
 
+
 def url_process(url):
     parameters = opts.url.split('?')[1]
     opts.url = opts.url.split('?')[0]
-    parameters = dict( (k, v if len(v)>1 else v[0] ) 
-           for k, v in urlparse.parse_qs(parameters).iteritems() )
+    parameters = dict((k, v if len(v) > 1 else v[0])
+    for k, v in urlparse.parse_qs(parameters).iteritems())
 
     for param in PARAMS:
         parameters[param] = PARAMS[param]
@@ -28,12 +27,15 @@ def url_process(url):
     opts.url = opts.url + '?' + urlencode(parameters)
     return opts.url
 
+
 def create_json():
-    data = { 'audit': { 'name': 'PoC done with Automatic Tool', 'scenario': [{'attack': []}] }}
+    data = {'audit': {'name': 'PoC done with Automatic Tool', 'scenario': [{'attack': []}]}}
     return data
+
 
 def display_json(data):
     print json.dumps(data, sort_keys=True, indent=2)
+
 
 def form_process(form_url, selectors):
     req = send_http_request(form_url)
@@ -41,6 +43,7 @@ def form_process(form_url, selectors):
     form = str(form)
     form = replace_form_with_tokens(form_url, form)
     return form
+
 
 def replace_form_with_tokens(url, form):
     global PARAMS
@@ -51,9 +54,12 @@ def replace_form_with_tokens(url, form):
     for elem in soup.findAll('input'):
         if (elem['name'] in PARAMS):
             elem['value'] = PARAMS[elem['name']]
+        if (elem['type'] == "password"):
+            elem['type'] = "hidden"
 
     form = str(soup).replace('&lt;%value%&gt;', '<%value%>')
     return form
+
 
 def get_form(content, selectors):
     soup = BeautifulSoup(''.join(content))
@@ -71,16 +77,18 @@ def get_form(content, selectors):
             return form[0]
     pass
 
+
 # create .conf file
 def create_conf_file(data):
     global TMP_FOLDER
     global CONF_FILE
 
     conf_file = TMP_FOLDER + CONF_FILE
-    with open(conf_file,"w") as f:
+    with open(conf_file, "w") as f:
         data = str(json.dumps(data, sort_keys=True, indent=2))
         f.write(data)
         f.close()
+
 
 # create file with specific data
 def create_file(filename, data):
@@ -91,6 +99,7 @@ def create_file(filename, data):
         f.write(data)
     f.close()
 
+
 # launch csrft
 def launch_csrft():
     global CSRFT_LOCATION
@@ -98,6 +107,7 @@ def launch_csrft():
     global CONF_FILE
 
     os.system("node " + CSRFT_LOCATION + " " + TMP_FOLDER + CONF_FILE)
+
 
 # iterate on all forms if after findAll (with selectors), len > 1
 def iterate_on_all_forms(forms):
@@ -120,6 +130,7 @@ def iterate_on_all_forms(forms):
     if (not notFound):
         raise Exception('You should have chosen a form !')
 
+
 def send_http_request(url):
     global COOKIE
 
@@ -129,6 +140,7 @@ def send_http_request(url):
 
     req = requests.get(url, headers=headers)
     return req
+
 
 # function to generatz the action form
 def generate_action_form(url, action):
@@ -167,6 +179,7 @@ def generate_action_form(url, action):
                 res += val + "/"
             res = res[:-1]
             return res
+
 
 def urlencode(dic):
     res = ""
@@ -224,11 +237,12 @@ else:
         PARAMS[arg[0]] = arg[1]
 
     # creating tmp folder
-    if not os.path.exists(TMP_FOLDER): os.makedirs(TMP_FOLDER)
+    if not os.path.exists(TMP_FOLDER):
+        os.makedirs(TMP_FOLDER)
 
     # form process
     if (opts.form is not None):
-        attack = {'method' : 'POST'}
+        attack = {'method': 'POST'}
         form = form_process(opts.form, selectors)
         create_file('form.html', form)
         if (opts.special_value is False):
@@ -245,12 +259,11 @@ else:
 
     # url process
     if (opts.url is not None):
-        attack = { 'method': 'GET'}
+        attack = {'method': 'GET'}
         if (opts.special_value is False):
             attack['type_attack'] = 'dico'
             attack['file'] = opts.dico_file
             attack['url'] = url_process(opts.url)
-            # opts.url = 
         else:
             attack['type_attack'] = 'special_value'
             attack['url'] = opts.url
